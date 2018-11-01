@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const Education = new Schema({
+const Experience = new Schema({
     user_id: { type: String, required: true },
-    degree: { type: String },
-    course: { type: String },
-    school: { type: String },
+    company: { type: String },
+    position: { type: String },
+    description: { type: String },
     start_date: { type: String },
     end_date: { type: String },
 
@@ -13,4 +13,4 @@ const Education = new Schema({
     modified_on: { type: String }
 })
 
-module.exports = mongoose.model('Education', Education)
+module.exports = mongoose.model('Experience', Experience)
