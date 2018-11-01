@@ -18,14 +18,14 @@ module.exports = {
         }
     },
     checkUser: async (req, res, next) => {
-        const { id } = req.params
+        const { user_id } = req.params
         
-        const user = await User.findById(id) 
+        const user = await User.findById(user_id) 
         
         if (user.deleted_on) 
             fail(res, new Error('User deleted'))
 
-        if (req.user._id !== id) 
+        if (req.user._id !== user_id) 
             fail(res, new Error('Unauthorized'))
         else    
             next()
