@@ -1,6 +1,8 @@
 const User = require('../models/user')
 const Education = require('../models/education')
-const { success, fail } = require('../utils')
+const Experience = require('../models/experience')
+
+const { success, fail, convertYearMonth } = require('../utils')
 const { checkJWT, checkUser } = require('../middlewares')
 
 module.exports = function(app) {
@@ -86,6 +88,8 @@ module.exports = function(app) {
             console.log('Updating education with the ff data: ', req.body)
             req.body.modified_on = new Date()
             req.body.user_id = user_id
+            req.body.start_date = convertYearMonth(req.body.start_date)
+            req.body.end_date = convertYearMonth(req.body.end_date)
 
             const updated_education = await Education.findOneAndUpdate(
                 { _id: education_id }, 
@@ -100,5 +104,54 @@ module.exports = function(app) {
             fail(res, err)
         }
     })
-    
+
+    app.post('/api/user/:user_id/experience', checkJWT, checkUser, async (req, res) => {
+        const { user_id } = req.params 
+        try {
+            req.body.user_id = user_id
+            req.body.start_date = convertYearMonth(req.body.start_date)
+            req.body.end_date = convertYearMonth(req.body.end_date)
+            
+            const user_experience = await new Experience(req.body)
+            await user_experience.save()
+
+            console.log(`Added experience for ${req.user.email}: `, user_experience)
+
+            success(res, user_experience)
+        } catch (err) {
+            fail(res, err)
+        }
+    })
+
+    app.get('/api/user/:user_id/experience/:experience_id', checkJWT, checkUser, async (req, res) => {
+        const { user_id, experience_id } = req.params 
+        try {
+            const user_experience = await Experience.findOne({ _id: experience_id, user_id })
+            success(res, user_experience)
+        } catch (err) {
+            fail(res, err)
+        }
+    })
+
+    app.put('/api/user/:user_id/experience/:experience_id', checkJWT, checkUser, async (req, res) => {
+        const { user_id, experience_id } = req.params 
+        try {
+            req.body.modified_on = new Date()
+            req.body.user_id = user_id
+            req.body.start_date = convertYearMonth(req.body.start_date)
+            req.body.end_date = convertYearMonth(req.body.end_date)
+
+            const updated_experience = await Experience.findOneAndUpdate(
+                { _id: experience_id }, 
+                req.body,
+                { upsert: true, new: true }
+            )
+
+            console.log('Updated experience: ', updated_experience)
+            
+            success(res, updated_experience)    
+        } catch (err) {
+            fail(res, err)
+        }
+    })
 }

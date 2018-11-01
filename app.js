@@ -19,5 +19,5 @@ require('./routes/auth_routes')(app)
 require('./routes/user_routes')(app)
 
 app.listen(config.PORT, () => {
-    console.log(`HTTP Server running on ${config.PORT}`)
+    console.log(`Server running on ${config.PORT}`)
 })
