@@ -9,7 +9,9 @@ module.exports = function(app) {
     app.post('/api/auth/login', async (req, res) => {
         const { email, password } = req.body 
         try {
+            console.log(`Logging in ${email}`)
             const user = await User.findOne({ email })
+            console.log('User found: ', user)
 
             if (user.deleted_on) 
                 throw new Error('User deleted')
@@ -18,16 +20,19 @@ module.exports = function(app) {
 
             if (match) {
                 const signed_jwt = jwt.sign({ _id: user._id, email }, JWT_SECRET, { expiresIn: JWT_EXPIRATION })
+                const { iat, exp } = jwt.verify(signed_jwt, JWT_SECRET)
                 const auth_json = {
                     _id: user._id,
                     email: user.email,
-                    token: signed_jwt
+                    token: signed_jwt,
+                    iat, 
+                    exp
                 }
 
                 success(res, auth_json)
-            } 
-
-            throw new Error('Username or email is not registered')
+            } else {
+                throw new Error('Username or email is not registered')
+            }
         } catch (err) {
             fail(res, err)
         }
