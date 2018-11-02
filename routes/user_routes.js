@@ -10,12 +10,17 @@ module.exports = function(app) {
         const { user_id } = req.params
         try {
             const user = await User.findById(user_id)
+            const education = await Education.find({ user_id })
+            const experience = await Experience.find({ user_id })
             const user_json = {
                 _id: user._id,
                 email: user.email,
                 first_name: user.first_name, 
                 last_name: user.last_name,
-                created_on: user.created_on
+                created_on: user.created_on,
+                modified_on: user.modified_on,
+                education, 
+                experience
             }
             success(res, user_json)
         } catch (err) {
