@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const User = require('../models/user')
 const Education = require('../models/education')
 const Experience = require('../models/experience')
@@ -5,7 +7,7 @@ const Experience = require('../models/experience')
 const { success, fail, convertYearMonth } = require('../utils')
 const { checkJWT, checkUser } = require('../middlewares')
 
-module.exports = function(app) {
+module.exports = function(app, ipfs) {
     app.get('/api/user/:user_id', checkJWT, checkUser, async (req, res) => {
         const { user_id } = req.params
         try {
@@ -155,6 +157,22 @@ module.exports = function(app) {
             console.log('Updated experience: ', updated_experience)
             
             success(res, updated_experience)    
+        } catch (err) {
+            fail(res, err)
+        }
+    })
+
+    app.post('/api/user/:user_id/cv', checkJWT, checkUser, async (req, res) => {
+        try {
+            const cv_buffer = Buffer.from(req.body.data, 'binary')
+            // await fs.writeFile('./uploads/test69.pdf', req.body.data,'binary')    
+
+            const uploaded_file = await ipfs.files.add(cv_buffer)
+
+            if (uploaded_file) {
+                console.log('file uploaded: ', uploaded_file)
+                success(res, { hash: uploaded_file[0].hash })
+            } 
         } catch (err) {
             fail(res, err)
         }
