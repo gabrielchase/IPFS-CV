@@ -1,5 +1,4 @@
-const fs = require('fs')
-
+const CV = require('../models/cv')
 const User = require('../models/user')
 const Education = require('../models/education')
 const Experience = require('../models/experience')
@@ -163,6 +162,7 @@ module.exports = function(app, ipfs) {
     })
 
     app.post('/api/user/:user_id/cv', checkJWT, checkUser, async (req, res) => {
+        const { user_id } = req.params
         try {
             const cv_buffer = Buffer.from(req.body.data, 'binary')
             // await fs.writeFile('./uploads/test69.pdf', req.body.data,'binary')    
@@ -171,7 +171,14 @@ module.exports = function(app, ipfs) {
 
             if (uploaded_file) {
                 console.log('file uploaded: ', uploaded_file)
-                success(res, { hash: uploaded_file[0].hash })
+                
+                const new_cv = await new CV({
+                    user_id,
+                    hash: uploaded_file[0].hash
+                })
+                await new_cv.save()
+                
+                success(res, new_cv)
             } 
         } catch (err) {
             fail(res, err)
