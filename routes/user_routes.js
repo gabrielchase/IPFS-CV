@@ -13,6 +13,7 @@ module.exports = function(app, ipfs) {
             const user = await User.findById(user_id)
             const education = await Education.find({ user_id })
             const experience = await Experience.find({ user_id })
+            const cv_history = await CV.find({ user_id })
             const user_json = {
                 _id: user._id,
                 email: user.email,
@@ -21,7 +22,8 @@ module.exports = function(app, ipfs) {
                 created_on: user.created_on,
                 modified_on: user.modified_on,
                 education, 
-                experience
+                experience,
+                cv_history
             }
             success(res, user_json)
         } catch (err) {
