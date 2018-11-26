@@ -128,6 +128,17 @@ module.exports = function(app, ipfs) {
         }
     })
 
+    app.delete('/api/user/:user_id/education/:education_id', checkJWT, checkUser, async (req, res) => {
+        const { user_id, education_id } = req.params 
+        try {
+            console.log('Deleting Education ID: ', education_id)
+            await Education.findOneAndDelete({ _id: education_id, user_id })
+            success(res, { deleted: education_id })    
+        } catch (err) {
+            fail(res, err)
+        }
+    })
+
     app.post('/api/user/:user_id/experience', checkJWT, checkUser, async (req, res) => {
         const { user_id } = req.params 
         try {
@@ -185,6 +196,17 @@ module.exports = function(app, ipfs) {
             console.log('Updated experience: ', updated_experience)
             
             success(res, updated_experience)    
+        } catch (err) {
+            fail(res, err)
+        }
+    })
+
+    app.delete('/api/user/:user_id/experience/:experience_id', checkJWT, checkUser, async (req, res) => {
+        const { user_id, experience_id } = req.params 
+        try {
+            console.log('Deleting Experience ID: ', experience_id)
+            await Experience.findOneAndDelete({ _id: experience_id, user_id })
+            success(res, { deleted: experience_id })    
         } catch (err) {
             fail(res, err)
         }
