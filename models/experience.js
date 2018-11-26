@@ -6,11 +6,13 @@ const Experience = new Schema({
     company: { type: String },
     position: { type: String },
     description: { type: String },
-    start_date: { type: String },
-    end_date: { type: String },
+    start_date: { type: Date },
+    end_date: { type: Date },
+    start_date_slug: { type: String },
+    end_date_slug: { type: String },
 
-    created_on: { type: String, default: new Date() },
-    modified_on: { type: String }
+    created_on: { type: Date, default: new Date() },
+    modified_on: { type: Date }
 })
 
 module.exports = mongoose.model('Experience', Experience)

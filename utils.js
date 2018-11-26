@@ -16,11 +16,14 @@ module.exports = {
     },
     convertYearMonth: (date) => {
         const [ year, month ] = date.split('-')
-        const converted_date = new Date(parseInt(year), parseInt(month)).toString()
+        const converted_date = new Date(parseInt(year), parseInt(month))
         
         if (converted_date === 'Invalid Date') 
             throw new Error('Invalid Date')
-        else 
-            return converted_date 
+        else {
+            const date_string = converted_date.toString().split(' ')
+            const date_slug = `${date_string[1]} ${date_string[3]}`
+            return { date: converted_date, slug: date_slug }
+        }
     }
 }

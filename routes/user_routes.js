@@ -39,7 +39,7 @@ module.exports = function(app, ipfs) {
             
             if (birthday) {
                 [ year, month, day ] = birthday.split('-')
-                _birthday = new Date(parseInt(year), parseInt(month), parseInt(day)).toString()
+                _birthday = new Date(parseInt(year), parseInt(month), parseInt(day))
             }
 
             const updated_user = await User.findOneAndUpdate(
@@ -70,8 +70,14 @@ module.exports = function(app, ipfs) {
         const { user_id } = req.params 
         try {
             req.body.user_id = user_id
-            req.body.start_date = convertYearMonth(req.body.start_date)
-            req.body.end_date = convertYearMonth(req.body.end_date)
+
+            const start_date = convertYearMonth(req.body.start_date)
+            req.body.start_date = start_date.date
+            req.body.start_date_slug = start_date.slug
+
+            const end_date = convertYearMonth(req.body.end_date)
+            req.body.end_date = end_date.date 
+            req.body.end_date_slug = end_date.slug
             
             const user_education = await new Education(req.body)
             await user_education.save()
@@ -99,8 +105,14 @@ module.exports = function(app, ipfs) {
             console.log('Updating education with the ff data: ', req.body)
             req.body.modified_on = new Date()
             req.body.user_id = user_id
-            req.body.start_date = convertYearMonth(req.body.start_date)
-            req.body.end_date = convertYearMonth(req.body.end_date)
+
+            const start_date = convertYearMonth(req.body.start_date)
+            req.body.start_date = start_date.date
+            req.body.start_date_slug = start_date.slug
+
+            const end_date = convertYearMonth(req.body.end_date)
+            req.body.end_date = end_date.date 
+            req.body.end_date_slug = end_date.slug
 
             const updated_education = await Education.findOneAndUpdate(
                 { _id: education_id }, 
@@ -120,8 +132,14 @@ module.exports = function(app, ipfs) {
         const { user_id } = req.params 
         try {
             req.body.user_id = user_id
-            req.body.start_date = convertYearMonth(req.body.start_date)
-            req.body.end_date = convertYearMonth(req.body.end_date)
+
+            const start_date = convertYearMonth(req.body.start_date)
+            req.body.start_date = start_date.date
+            req.body.start_date_slug = start_date.slug
+
+            const end_date = convertYearMonth(req.body.end_date)
+            req.body.end_date = end_date.date 
+            req.body.end_date_slug = end_date.slug
             
             const user_experience = await new Experience(req.body)
             await user_experience.save()
@@ -149,8 +167,14 @@ module.exports = function(app, ipfs) {
         try {
             req.body.modified_on = new Date()
             req.body.user_id = user_id
-            req.body.start_date = convertYearMonth(req.body.start_date)
-            req.body.end_date = convertYearMonth(req.body.end_date)
+            
+            const start_date = convertYearMonth(req.body.start_date)
+            req.body.start_date = start_date.date
+            req.body.start_date_slug = start_date.slug
+
+            const end_date = convertYearMonth(req.body.end_date)
+            req.body.end_date = end_date.date 
+            req.body.end_date_slug = end_date.slug
 
             const updated_experience = await Experience.findOneAndUpdate(
                 { _id: experience_id }, 
