@@ -16,7 +16,7 @@ module.exports = {
     },
     convertYearMonth: (date) => {
         const [ year, month ] = date.split('-')
-        const converted_date = new Date(parseInt(year), parseInt(month))
+        const converted_date = new Date(parseInt(year), parseInt(month)-1)
         
         if (converted_date === 'Invalid Date') 
             throw new Error('Invalid Date')
