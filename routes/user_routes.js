@@ -11,8 +11,8 @@ module.exports = function(app, ipfs) {
         const { user_id } = req.params
         try {
             const user = await User.findById(user_id)
-            const education = await Education.find({ user_id })
-            const experience = await Experience.find({ user_id })
+            const education = await Education.find({ user_id }).sort({ end_date: -1 })
+            const experience = await Experience.find({ user_id }).sort({ end_date: -1 })
             const cv_history = await CV.find({ user_id })
             const user_json = {
                 _id: user._id,
