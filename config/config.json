@@ -1,7 +1,7 @@
 {
     "development": {
         "DB_URL": "mongodb://admin:admin11@ds159180.mlab.com:59180/thesis-dev-db",
-        "PORT": 3000,
+        "PORT": 3005,
         "SALT_ROUNDS": 10,
         "JWT_SECRET": "jwt_secret",
         "JWT_EXPIRATION": "1d"

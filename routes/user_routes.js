@@ -70,6 +70,9 @@ module.exports = function(app, ipfs) {
         const { user_id } = req.params 
         try {
             req.body.user_id = user_id
+            req.body.start_date = convertYearMonth(req.body.start_date)
+            req.body.end_date = convertYearMonth(req.body.end_date)
+            
             const user_education = await new Education(req.body)
             await user_education.save()
             console.log(`Added education for ${req.user.email}: `, user_education)
