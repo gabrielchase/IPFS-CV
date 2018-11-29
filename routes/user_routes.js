@@ -5,6 +5,10 @@ const Experience = require('../models/experience')
 
 const { success, fail, convertYearMonth } = require('../utils')
 const { checkJWT, checkUser } = require('../middlewares')
+const config = require('../config/config')
+const Blockchain = require('../blockchain')
+
+const cvChain = new Blockchain()
 
 module.exports = function(app, ipfs) {
     app.get('/api/user/:user_id', checkJWT, checkUser, async (req, res) => {
@@ -223,14 +227,41 @@ module.exports = function(app, ipfs) {
             if (uploaded_file) {
                 console.log('file uploaded: ', uploaded_file)
                 
-                const new_cv = await new CV({
+                let new_cv = await new CV({
                     user_id,
                     hash: uploaded_file[0].hash
                 })
                 await new_cv.save()
+
+                new_cv.index = cvChain.makeNewTransaction(uploaded_file[0].hash, user_id)
                 
                 success(res, new_cv)
             } 
+        } catch (err) {
+            fail(res, err)
+        }
+    })
+
+    app.get('/api/cvchain', checkJWT, async (req, res) => {
+        res.send(cvChain)
+    })
+
+    app.get('/api/cvchain/mine', checkJWT, async (req, res) => {
+        try {
+            const latest_block = cvChain.getLatestBlock()
+            const prev_block_hash = latest_block.hash
+            const current_block_data = {
+                transactions: cvChain.transactions, 
+                index: latest_block.index + 1
+            }
+            const nonce = cvChain.proofOfWork(prev_block_hash, current_block_data)
+            const block_hash = cvChain.hashBlock(prev_block_hash, current_block_data, nonce)
+    
+            cvChain.makeNewTransaction('00000', 'REWARD_TRANSACTION', config.NODE_ADDR)
+    
+            const new_block = cvChain.createNewBlock(nonce, prev_block_hash, block_hash)
+    
+            success(res, new_block)
         } catch (err) {
             fail(res, err)
         }
