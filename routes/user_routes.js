@@ -257,7 +257,7 @@ module.exports = function(app, ipfs) {
             const nonce = cvChain.proofOfWork(prev_block_hash, current_block_data)
             const block_hash = cvChain.hashBlock(prev_block_hash, current_block_data, nonce)
     
-            cvChain.makeNewTransaction('00000', 'REWARD_TRANSACTION', config.NODE_ADDR)
+            cvChain.makeNewTransaction('00000', 'FINISHED_TRANSACTION', config.NODE_ADDR)
     
             const new_block = cvChain.createNewBlock(nonce, prev_block_hash, block_hash)
     
