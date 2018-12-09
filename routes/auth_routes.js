@@ -39,12 +39,15 @@ module.exports = function(app) {
     })
 
     app.post('/api/user', async (req, res) => {
-        const { email, password } = req.body
+        const { first_name, last_name, email, password } = req.body
+        console.log('Creating user: ', req.body)
 
         try {
             const hashed_password = await bcrypt.hash(password, SALT_ROUNDS)
             const new_user = await new User({
                 email, 
+                first_name,
+                last_name,
                 password: hashed_password,
             })
             await new_user.save()
@@ -53,6 +56,8 @@ module.exports = function(app) {
             const new_user_json = {
                 _id: new_user._id,
                 email, 
+                first_name,
+                last_name,
                 created_on: new_user.created_on
             }
 
