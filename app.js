@@ -8,6 +8,7 @@ const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 const config = require('./config/config')
 
 // "mongodb://admin:admin11@ds159180.mlab.com:59180/thesis-dev-db",
+console.log('DB_URL: ', config.DB_URL)
 mongoose.connect(config.DB_URL, { useNewUrlParser: true })
 mongoose.Promise = global.Promise
 
