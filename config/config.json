@@ -6,5 +6,12 @@
         "JWT_SECRET": "jwt_secret",
         "JWT_EXPIRATION": "1d",
         "NODE_ADDR": "A1"
+    },
+    "production": {
+        "DB_URL": "mongolab-perpendicular-93963",
+        "SALT_ROUNDS": 10,
+        "JWT_SECRET": "jwt_secret",
+        "JWT_EXPIRATION": "1d",
+        "NODE_ADDR": "A1"
     }
 }
