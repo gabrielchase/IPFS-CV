@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app.js"
   },
@@ -21,5 +22,8 @@
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.3.8",
     "sha256": "^0.2.0"
+  },
+  "engines": {
+    "node": "8.12"
   }
 }
