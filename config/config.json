@@ -8,7 +8,7 @@
         "NODE_ADDR": "A1"
     },
     "production": {
-        "DB_URL": "mongolab-perpendicular-93963",
+        "DB_URL": "mongodb://heroku_prxkl78w:g4at5tnmj4aaessefvak180q5i@ds129484.mlab.com:29484/heroku_prxkl78w",
         "PORT": 3005,
         "SALT_ROUNDS": 10,
         "JWT_SECRET": "jwt_secret",
