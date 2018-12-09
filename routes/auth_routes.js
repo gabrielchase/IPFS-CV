@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const User = require('../models/user')
+const User = require('../models/User')
 const { success, fail } = require('../utils')
 const { JWT_SECRET, JWT_EXPIRATION, SALT_ROUNDS } = require('../config/config')
 

@@ -1,5 +1,5 @@
 const CV = require('../models/cv')
-const User = require('../models/user')
+const User = require('../models/User')
 const Education = require('../models/education')
 const Experience = require('../models/experience')
 
